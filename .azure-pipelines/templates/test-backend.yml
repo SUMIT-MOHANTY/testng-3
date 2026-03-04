@@ -1,0 +1,1 @@
+steps:\n- task: Python@3\n  inputs:\n    command: 'custom'\n    customCommand: 'pytest -q'\n  displayName: 'Run pytest'\n  continueOnError: false\n

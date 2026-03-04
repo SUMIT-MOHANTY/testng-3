@@ -1,0 +1,1 @@
+steps:\n- task: NodeTool@0\n  inputs:\n    versionSpec: '16.x'\n  displayName: 'Install Node.js'\n- script: npm ci\n  displayName: 'npm ci'\n- script: npm run test\n  displayName: 'Run frontend tests'\n  continueOnError: false\n
