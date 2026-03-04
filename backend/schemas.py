@@ -1,10 +1,26 @@
-from pydantic import BaseModel, condecimal, PositiveInt
+from pydantic import BaseModel, EmailStr
 
-class TransferRequest(BaseModel):
-    recipient_id: PositiveInt
-    amount: condecimal(gt=0, max_digits=12, decimal_places=2)
+class UserBase(BaseModel):
+    email: EmailStr
 
-class TransferResponse(BaseModel):
-    success: bool
-    new_balance: condecimal(max_digits=12, decimal_places=2) | None = None
-    detail: str | None = None
+class UserCreate(UserBase):
+    password: str
+
+class UserRead(UserBase):
+    id: int
+    is_active: bool
+    class Config:
+        orm_mode = True
+
+class ItemBase(BaseModel):
+    title: str
+    description: str | None = None
+
+class ItemCreate(ItemBase):
+    pass
+
+class ItemRead(ItemBase):
+    id: int
+    owner_id: int | None = None
+    class Config:
+        orm_mode = True

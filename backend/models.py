@@ -1,19 +1,20 @@
-from sqlalchemy import Column, Integer, String, Numeric, DateTime, func
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
 
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    balance = Column(Numeric(12, 2), default=0)
+    is_active = Column(Boolean, default=True)
+    items = relationship("Item", back_populates="owner")
 
-class LedgerEntry(Base):
-    __tablename__ = "ledger"
+class Item(Base):
+    __tablename__ = "items"
     id = Column(Integer, primary_key=True, index=True)
-    sender_id = Column(Integer, nullable=False)
-    recipient_id = Column(Integer, nullable=False)
-    amount = Column(Numeric(12, 2), nullable=False)
-    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    title = Column(String, index=True, nullable=False)
+    description = Column(String, nullable=True)
+    owner_id = Column(Integer, ForeignKey("users.id"))
+    owner = relationship("User", back_populates="items")
