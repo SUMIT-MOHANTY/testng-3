@@ -8,10 +8,9 @@ class ItemBase(BaseModel):
 class ItemCreate(ItemBase):
     pass
 
-class Item(ItemBase):
+class ItemRead(ItemBase):
     id: int
     owner_id: int
-
     class Config:
         orm_mode = True
 
@@ -21,10 +20,9 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
-class User(UserBase):
+class UserRead(UserBase):
     id: int
     is_active: bool
-    items: List[Item] = []
-
+    items: List[ItemRead] = []
     class Config:
         orm_mode = True

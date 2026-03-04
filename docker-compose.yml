@@ -1,31 +1,25 @@
-version: '3.9'
+version: "3.9"
 services:
   db:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dbname
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     ports:
       - "5432:5432"
-
-  backend:
-    build: ./backend
-    env_file: .env
-    ports:
-      - "8000:80"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  api:
+    build: .
     depends_on:
-      - db
-
-  frontend:
-    build: ./frontend
-    env_file: ./frontend/.env.example
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - SECRET_KEY=your-secret-key
     ports:
-      - "5173:80"
-    depends_on:
-      - backend
-
-volumes:
-  pgdata:
+      - "8000:8000"
