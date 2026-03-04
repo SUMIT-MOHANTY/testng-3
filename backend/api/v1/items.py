@@ -1,15 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing import List
 from ... import crud, schemas, dependencies
 
-router = APIRouter()
+router = APIRouter(prefix="/items", tags=["items"])
 
-@router.get("/items/", response_model=list[schemas.Item])
+@router.get("/", response_model=List[schemas.ItemRead])
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(dependencies.get_db)):
-    return crud.get_items(db, skip, limit)
+    return crud.get_items(db, skip=skip, limit=limit)
 
-@router.post("/items/", response_model=schemas.Item)
-def create_item(item: schemas.ItemCreate, db: Session = Depends(dependencies.get_db),
-               current_user: schemas.User = Depends(...)):
-    # Placeholder for auth; assumes user_id = 1
-    return crud.create_user_item(db, item, user_id=1)
+@router.post("/", response_model=schemas.ItemRead)
+def create_item(item_in: schemas.ItemCreate, db: Session = Depends(dependencies.get_db), current_user: models.User = Depends(dependencies.get_current_user)):
+    return crud.create_item(db, item_in, user_id=current_user.id)
