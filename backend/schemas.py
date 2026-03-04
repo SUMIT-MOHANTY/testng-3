@@ -1,30 +1,23 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List, Optional
-
-class ItemBase(BaseModel):
-    title: str
-    description: Optional[str] = None
-
-class ItemCreate(ItemBase):
-    pass
-
-class Item(ItemBase):
-    id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
+from .schemas.role import RoleRead
 
 class UserBase(BaseModel):
-    email: str
+    username: str
+    email: EmailStr
 
 class UserCreate(UserBase):
     password: str
 
-class User(UserBase):
+class UserRead(UserBase):
     id: int
-    is_active: bool
-    items: List[Item] = []
-
+    roles: List[RoleRead] = []
     class Config:
         orm_mode = True
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+
+# Placeholder for Item schemas
