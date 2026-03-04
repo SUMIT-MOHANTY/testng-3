@@ -1,0 +1,1 @@
+# Backend\n\n## Immutable Ledger Integration (Stub)\n\nThis implementation uses an in‑memory ledger for development.\nEnvironment variables:\n- `LEDGER_ENDPOINT=https://mock-ledger.local`\n- `LEDGER_KEY=your-ledger-key`\n\n**TODO:** Replace `InMemoryLedgerService` with the Azure Confidential Ledger client\nonce the real service is provisioned.\n

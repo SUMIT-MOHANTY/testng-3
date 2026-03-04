@@ -1,11 +1,1 @@
-FROM node:20-alpine AS build
-WORKDIR /app
-COPY package.json package-lock.json* vite.config.ts tsconfig.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:16-alpine AS build\nWORKDIR /app\nCOPY frontend/ .\nRUN npm ci && npm run build\n\nFROM nginx:alpine\nCOPY --from=build /app/dist /usr/share/nginx/html\nEXPOSE 80\nCMD ["nginx", "-g", "daemon off;"]\n
