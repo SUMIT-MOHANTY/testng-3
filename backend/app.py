@@ -3,16 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from .api.v1 import users, items
 
 def create_app() -> FastAPI:
-    app = FastAPI(title="MyApp")
+    app = FastAPI(title='UAT Coordination API')
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=['*'],
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=['*'],
+        allow_headers=['*'],
     )
-    app.include_router(users.router, prefix="/api/v1")
-    app.include_router(items.router, prefix="/api/v1")
+    app.include_router(users.router)
+    app.include_router(items.router)
     return app
-
-app = create_app()
