@@ -1,0 +1,176 @@
+openapi: 3.1.0
+info:
+  title: Claim Processing API
+  version: 1.0.0
+paths:
+  /claims:
+    post:
+      operationId: claims_submit
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: header
+          name: X-Idempotency-Key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimCreateDTO'
+      responses:
+        '201':
+          description: Claim created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponseDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '409':
+          description: Idempotency conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /claims/{claim_id}/validate:
+    post:
+      operationId: claims_validate
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: claim_id
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: X-Idempotency-Key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimValidateDTO'
+      responses:
+        '200':
+          description: Claim validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponseDTO'
+  /claims/{claim_id}/approve:
+    post:
+      operationId: claims_approve
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: claim_id
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: X-Idempotency-Key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimApproveDTO'
+      responses:
+        '200':
+          description: Claim approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponseDTO'
+  /claims/{claim_id}/payout:
+    post:
+      operationId: claims_payout
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: claim_id
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: X-Idempotency-Key
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Claim paid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponseDTO'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ClaimCreateDTO:
+      type: object
+      required: [policy_id, user_id, amount, documents]
+      properties:
+        policy_id:
+          type: string
+        user_id:
+          type: string
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+          default: USD
+        documents:
+          type: array
+          items:
+            type: string
+    ClaimValidateDTO:
+      type: object
+      required: [documents]
+      properties:
+        documents:
+          type: array
+          items:
+            type: string
+    ClaimApproveDTO:
+      type: object
+      required: [approver_id]
+      properties:
+        approver_id:
+          type: string
+    ClaimResponseDTO:
+      type: object
+      properties:
+        claim_id:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    ErrorDTO:
+      type: object
+      properties:
+        detail:
+          type: string
