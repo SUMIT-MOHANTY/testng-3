@@ -1,0 +1,1 @@
+import React from 'react'\nimport { render, screen, fireEvent, waitFor } from '@testing-library/react'\nimport TransferForm from '../../../components/transfer/TransferForm'\ntest('renders form fields', () => {\n  render(<TransferForm onSubmit={jest.fn()} />);\n  expect(screen.getByLabelText(/Source Account ID/i)).toBeInTheDocument();\n});\n

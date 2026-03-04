@@ -1,0 +1,1 @@
+import React from 'react'\nimport { Alert } from '@mui/material'\ntype Props = { message: string }\nexport default function TransferErrorAlert({ message }: Props) {\n  return <Alert severity='error' sx={{ mt: 2 }}>{message}</Alert>;\n}\n

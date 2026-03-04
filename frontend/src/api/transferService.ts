@@ -1,0 +1,1 @@
+import axios from './axiosInstance'\nimport { TransferRequest, TransferResponse } from '../types/transfer'\nexport const submitTransfer = (payload: TransferRequest): Promise<TransferResponse> => {\n  return axios.post<TransferResponse>(`${process.env.REACT_APP_API_BASE_URL}/api/transfer`, payload)\n    .then(res => res.data);\n};\n

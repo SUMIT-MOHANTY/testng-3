@@ -1,0 +1,1 @@
+export interface TransferRequest {\n  sourceAccountId: string;\n  destinationAccountId: string;\n  amount: number;\n  currency: 'USD' | 'EUR' | 'GBP';\n  memo?: string | null;\n}\nexport interface TransferResponse {\n  transactionId: string;\n  status: 'COMPLETED';\n  timestamp: string;\n}\nexport interface ApiError {\n  errors: { field: string; message: string }[];\n}\n
