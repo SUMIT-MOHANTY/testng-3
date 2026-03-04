@@ -15,6 +15,9 @@ engine = create_engine(settings.DATABASE_URL, echo=False, future=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db() -> Generator[Session, None, None]:
+from . import models, security
+
+def get_db():
     db = SessionLocal()
     try:
         yield db
@@ -49,3 +52,8 @@ def require_role(*allowed_roles: str):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient privileges")
         return current_user
     return Depends(role_dependency)
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    user = db.query(models.User).filter(models.User.id == payload.get("sub")).first()
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    return user

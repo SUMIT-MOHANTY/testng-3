@@ -30,6 +30,12 @@ from passlib.context import CryptContext
 from .config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from typing import Optional
+from jose import jwt
+from fastapi.security import OAuth2PasswordBearer
+from .config import settings
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
@@ -50,3 +56,13 @@ def decode_access_token(token: str) -> dict:
         return payload
     except jwt.PyJWTError:
         return {}
+    expire = datetime.utcnow() + (expires_delta if expires_delta else timedelta(minutes=settings.access_token_expire_minutes))
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
+
+def decode_access_token(token: str) -> Optional[dict]:
+    try:
+        payload = jwt.decode(token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm])
+        return payload
+    except Exception:
+        return None

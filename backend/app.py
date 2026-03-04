@@ -1,12 +1,14 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from .api.v1 import auth, users
+from .config import settings
+from .database import engine
+from .models import Base
 
-def get_app() -> FastAPI:
-    app = FastAPI(title="Azure AD B2C Auth Demo")
-    app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
-    app.include_router(auth.router, prefix="/api/v1")
-    app.include_router(users.router, prefix="/api/v1")
+def create_app() -> FastAPI:
+    app = FastAPI(title="Financial Service API", version="0.1.0")
+    # Create tables on startup if they do not exist
+    @app.on_event("startup")
+    def on_startup():
+        Base.metadata.create_all(bind=engine)
     return app
 
-app = get_app()
+app = create_app()

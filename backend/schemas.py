@@ -1,23 +1,22 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import List, Optional
+import datetime
 
-class UserBase(BaseModel):
-    username: str
+class UserCreate(BaseModel):
     email: EmailStr
-
-class UserCreate(UserBase):
     password: str
 
-class UserRead(UserBase):
+class UserRead(BaseModel):
     id: int
-    role: str
+    email: EmailStr
     is_active: bool
+
     class Config:
         orm_mode = True
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
+class AccountRead(BaseModel):
+    id: int
+    balance: float
 
-class TokenData(BaseModel):
-    username: Optional[str] = None
+    class Config:
+        orm_mode = True
