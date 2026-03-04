@@ -1,0 +1,1 @@
+steps:\n- task: AzureCLI@2\n  inputs:\n    azureSubscription: '$(AZURE_SERVICE_CONNECTION)'\n    scriptType: 'bash'\n    scriptLocation: 'inlineScript'\n    inlineScript: |\n      az login --service-principal -u $(AZURE_SERVICE_PRINCIPAL_ID) -p $(AZURE_SERVICE_PRINCIPAL_SECRET) --tenant $(AZURE_TENANT_ID)\n      az acr login --name $(ACR_NAME)\n
