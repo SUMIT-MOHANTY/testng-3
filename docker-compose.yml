@@ -20,6 +20,14 @@ services:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: secure_transfer_db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "user"]
+      interval: 5s
       timeout: 5s
       retries: 5
   api:
@@ -41,3 +49,9 @@ services:
       - pgdata:/var/lib/postgresql/data
 volumes:
   pgdata:
+    env_file: .env.example
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
