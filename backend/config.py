@@ -1,13 +1,13 @@
-from pydantic import BaseSettings
+import os
+from pydantic import BaseSettings, Field
 
 class Settings(BaseSettings):
-    AZURE_SUBSCRIPTION_ID: str = "your-subscription-id"
-    AZURE_AD_CLIENT_ID: str = "your-client-id"
-    SQL_CONNECTION_STRING: str = "postgresql://user:password@db:5432/dbname"
-    JWT_SECRET_KEY: str = "changeme"
-    JWT_ALGORITHM: str = "HS256"
+    LEDGER_ENDPOINT: str = Field(default="https://mock-ledger.local", env="LEDGER_ENDPOINT")
+    LEDGER_KEY: str = Field(default="your-ledger-key", env="LEDGER_KEY")
+    DATABASE_URL: str = Field(default="postgresql+psycopg2://postgres:postgres@db:5432/postgres", env="DATABASE_URL")
 
     class Config:
         env_file = ".env"
+        env_file_encoding = "utf-8"
 
 settings = Settings()
