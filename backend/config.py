@@ -1,11 +1,9 @@
-from pydantic import BaseSettings
+from pydantic import BaseSettings, Field
 
 class Settings(BaseSettings):
-    AZURE_SUBSCRIPTION_ID: str = "your-subscription-id"
-    AZURE_AD_CLIENT_ID: str = "your-client-id"
-    SQL_CONNECTION_STRING: str = "postgresql://user:password@db:5432/dbname"
-    JWT_SECRET_KEY: str = "changeme"
-    JWT_ALGORITHM: str = "HS256"
+    sql_conn: str = Field(..., env="SQL_CONN")
+    jwt_secret: str = Field("change_me", env="JWT_SECRET")
+    jwt_algo: str = "HS256"
 
     class Config:
         env_file = ".env"
