@@ -1,0 +1,4 @@
+.container { max-width: 600px; margin: auto; }
+.container div { margin-bottom: 0.5rem; }
+.container span { color: red; }
+@media (max-width: 600px) { .container { width: 100%; } }
