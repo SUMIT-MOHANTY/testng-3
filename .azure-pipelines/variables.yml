@@ -1,0 +1,1 @@
+variables:\n- name: ACR_NAME\n  value: myacr\n- name: DATABASE_URL\n  value: ''\n- name: REDIS_HOST\n  value: ''\n- name: AZURE_SERVICE_PRINCIPAL_ID\n  value: your-sp-id\n- name: AZURE_SERVICE_PRINCIPAL_SECRET\n  value: your-sp-secret\n  isSecret: true\n- name: AZURE_TENANT_ID\n  value: your-tenant-id\n
