@@ -33,3 +33,12 @@
 - Fix Iterations: `5`
 - Summary: Add service layer and placeholder endpoints for writing to the immutable ledger. Since the real Azure Confidential Ledger instance is not yet provisioned, use in‑memory storage and environment variables like LEDGER_ENDPOINT=https://mock-ledger.local and LED...
 
+## 2026-03-04T06:42:53Z - Main Task
+- Agent: `agent_02`
+- Task: `Backend Core: Data Model & ORM Entity Definition`
+- Task ID: `18427`
+- Branch: `agent/backend-core-data-model-orm-entity-definition-18427`
+- Build Status: `success`
+- Fix Iterations: `1`
+- Summary: Design and implement ORM entities for Users, Accounts, Transactions, Loans, Insurance Policies, and Claims using the chosen backend framework. Include migrations and seed data. NOTE: Using placeholder DB connection string (`SQL_DB_CONN=your-connection-strin...
+
