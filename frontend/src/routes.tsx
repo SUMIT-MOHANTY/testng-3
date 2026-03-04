@@ -1,0 +1,1 @@
+\nimport { LoanApplicationForm, LoanDashboard } from './pages/loan';\n<Route path="/loan/apply" element={<LoanApplicationForm/>} />\n<Route path="/loan/dashboard/:loanId" element={<LoanDashboard/>} />\n
