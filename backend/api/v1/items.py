@@ -1,15 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from ... import crud, schemas, dependencies
+from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
 
-@router.get("/items/", response_model=list[schemas.Item])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(dependencies.get_db)):
-    return crud.get_items(db, skip, limit)
+@router.get('/')
+def list_items():
+    return [{"id": 1, "title": "Item 1"}]
 
-@router.post("/items/", response_model=schemas.Item)
-def create_item(item: schemas.ItemCreate, db: Session = Depends(dependencies.get_db),
-               current_user: schemas.User = Depends(...)):
-    # Placeholder for auth; assumes user_id = 1
-    return crud.create_user_item(db, item, user_id=1)
+@router.get('/{item_id}')
+def get_item(item_id: int):
+    if item_id != 1:
+        raise HTTPException(status_code=404, detail='Item not found')
+    return {"id": 1, "title": "Item 1"}
