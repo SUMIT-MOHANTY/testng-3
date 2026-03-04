@@ -25,3 +25,12 @@
 - Fix Iterations: `1`
 - Summary: Implement secure fund transfer endpoints, including validation, balance updates, and immutable ledger entries. NOTE: Using placeholder Azure SQL connection string (`SQL_CONN=your-sql-conn-string`) and mock ledger endpoint until credentials are provided.
 
+## 2026-03-04T06:46:11Z - Main Task
+- Agent: `agent_06`
+- Task: `Infrastructure Task: Azure IaC Deployment Scripts`
+- Task ID: `18420`
+- Branch: `agent/infrastructure-task-azure-iac-deployment-scripts-18420`
+- Build Status: `success`
+- Fix Iterations: `3`
+- Summary: Write Terraform/Bicep scripts to provision all required Azure resources (AKS, Azure SQL, Cosmos DB, Confidential Ledger, Service Bus, Redis, App Service, Monitor, DNS). Include placeholder variables for missing credentials (e.g., `AZURE_SUBSCRIPTION_ID=your...
+
