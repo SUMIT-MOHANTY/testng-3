@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
@@ -9,7 +9,6 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
-    items = relationship("Item", back_populates="owner")
 
 class Item(Base):
     __tablename__ = "items"
@@ -17,4 +16,4 @@ class Item(Base):
     title = Column(String, index=True)
     description = Column(String, nullable=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
-    owner = relationship("User", back_populates="items")
+    owner = relationship("User")

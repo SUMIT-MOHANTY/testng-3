@@ -1,31 +1,32 @@
-version: '3.9'
+version: "3.9"
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dbname
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appdb
     ports:
       - "5432:5432"
-
+    volumes:
+      - pgdata:/var/lib/postgresql/data
   backend:
-    build: ./backend
-    env_file: .env
-    ports:
-      - "8000:80"
+    build: .
     depends_on:
       - db
-
-  frontend:
-    build: ./frontend
-    env_file: ./frontend/.env.example
     ports:
-      - "5173:80"
-    depends_on:
-      - backend
-
+      - "8000:8000"
+    env_file:
+      - .env.example
+  frontend:
+    image: node:18-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
 volumes:
   pgdata:

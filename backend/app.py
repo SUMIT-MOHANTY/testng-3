@@ -1,9 +1,9 @@
 from fastapi import FastAPI
+from .config import settings
 from fastapi.middleware.cors import CORSMiddleware
-from .api.v1 import users, items
 
 def create_app() -> FastAPI:
-    app = FastAPI(title="MyApp")
+    app = FastAPI(title="Demo API")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -11,8 +11,7 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    from .api.v1 import users, items
     app.include_router(users.router, prefix="/api/v1")
     app.include_router(items.router, prefix="/api/v1")
     return app
-
-app = create_app()
