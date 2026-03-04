@@ -1,14 +1,20 @@
-from .config import settings
-from .models import Base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-
-engine = create_engine(settings.SQL_CONNECTION_STRING, echo=False)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from fastapi import Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from .database import SessionLocal
+from . import models, security
 
 def get_db():
-    db: Session = SessionLocal()
+    db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+def get_current_user(token: str = Depends(security.oauth2_scheme), db: Session = Depends(get_db)):
+    payload = security.decode_access_token(token)
+    if payload is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    user = db.query(models.User).filter(models.User.id == payload.get("sub")).first()
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    return user

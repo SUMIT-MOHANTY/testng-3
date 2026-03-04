@@ -1,30 +1,22 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List, Optional
+import datetime
 
-class ItemBase(BaseModel):
-    title: str
-    description: Optional[str] = None
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
 
-class ItemCreate(ItemBase):
-    pass
-
-class Item(ItemBase):
+class UserRead(BaseModel):
     id: int
-    owner_id: int
+    email: EmailStr
+    is_active: bool
 
     class Config:
         orm_mode = True
 
-class UserBase(BaseModel):
-    email: str
-
-class UserCreate(UserBase):
-    password: str
-
-class User(UserBase):
+class AccountRead(BaseModel):
     id: int
-    is_active: bool
-    items: List[Item] = []
+    balance: float
 
     class Config:
         orm_mode = True
