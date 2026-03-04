@@ -1,19 +1,16 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-
-const Home = () => <h2>Home</h2>;
-const About = () => <h2>About</h2>;
-
-export default function App() {
-  return (
-    <div>
-      <nav>
-        <Link to="/">Home</Link> | <Link to="/about">About</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </div>
-  );
-}
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ProtectedRoute from './routes/ProtectedRoute';
+const Dashboard = () => <h2>Dashboard (Protected)</h2>;
+const App: React.FC = () => (
+  <Router>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+    </Routes>
+  </Router>
+);
+export default App;
